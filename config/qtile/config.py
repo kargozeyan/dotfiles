@@ -96,7 +96,7 @@ keys = [
         commands={
             'shutdown': 'systemctl shutdown',
             'reboot': 'systemctl reboot',
-            'lock': 'systemctl suspend',
+            'lock': 'slock',
             'suspend': 'systemctl suspend',
         },
         background="#1e1e2e",
@@ -116,6 +116,7 @@ keys = [
         # font="Jetbrains Mono SemiBold",
         dmenu_height=30  # Only supported by some dmenu forks
     ))),
+    Key([mod, 'control'], 'l', lazy.spawn("slock")),
 ]
 # 一二三四五六七八九
 
