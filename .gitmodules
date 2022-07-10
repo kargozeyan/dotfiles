@@ -4,3 +4,6 @@
 [submodule "config/dmenu"]
 	path = config/dmenu
 	url = https://github.com/kargozeyan/dmenu
+[submodule "config/slock"]
+	path = config/slock
+	url = git@github.com:kargozeyan/slock.git
