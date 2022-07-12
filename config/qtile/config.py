@@ -2,37 +2,11 @@ from libqtile import bar, layout
 from libqtile.widget import base
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
-from qtile_extras import widget
 from libqtile import extension
+from qtile_extras import widget
 from qtile_extras.widget.decorations import RectDecoration
 
-
-class ClickableClock(widget.Clock):
-    def __init__(self, **config):
-        widget.Clock.__init__(self, **config)
-        self.format = config['primary']
-        self.primary = config['primary']
-        self.secondary = config['secondary']
-        self.mouse_callbacks = {
-            'Button1': self.switch_format
-        }
-
-    def switch_format(self):
-        self.format = self.secondary if self.format == self.primary else self.primary
-        self.bar.draw()
-
-
-class KeyboardLanguage(base.ThreadPoolText, base.MarginMixin, base.PaddingMixin):
-
-    def __init__(self, **config):
-        base.ThreadPoolText.__init__(self, "", **config)
-        self.add_defaults(base.MarginMixin.defaults)
-        self.add_defaults(base.PaddingMixin.defaults)
-        self.update_interval = 1
-
-    def poll(self):
-        return self.call_process("xkb-switch -p".split())[0:2].upper()
-
+from customwidgets import ClickableClock, Keyboard
 
 mod = "mod4"
 terminal = "alacritty"
@@ -92,7 +66,8 @@ keys = [
     Key([mod], "m", lazy.spawn("xkb-switch -n")),
     Key([mod], "b", lazy.hide_show_bar()),
     Key([mod], "x", lazy.hide_show_bar()),
-    Key([mod, "control"], 't', lazy.run_extension(extension.CommandSet(
+    Key([mod], "f", lazy.window.toggle_floating()),
+    Key([mod, "control"], 'x', lazy.run_extension(extension.CommandSet(
         commands={
             'shutdown': 'systemctl shutdown',
             'reboot': 'systemctl reboot',
@@ -165,8 +140,8 @@ layout_defaults = {
 }
 
 layouts = [
-    # layout.MonadTall(**layout_defaults),
-    layout.Columns(**layout_defaults),
+    layout.MonadTall(**layout_defaults),
+    # layout.Columns(**layout_defaults),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2, **layout_defaults),
@@ -266,7 +241,7 @@ screens = [
                     foreground="#1e1e2e",
                     **decor
                 ),
-                ClickableClock(
+                ClickableClock.ClickableClock(
                     primary=" %I:%M:%S %p",
                     secondary="\uf073 %d-%m-%Y",
                     background="#74c7ec",
